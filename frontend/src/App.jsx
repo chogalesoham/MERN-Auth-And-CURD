@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/login";
 import Ragester from "./pages/ragester";
+import Admin from "./pages/admin";
 
 const Router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const Router = createBrowserRouter([
   {
     path: "/ragester",
     element: <Ragester />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
   },
 ]);
 
