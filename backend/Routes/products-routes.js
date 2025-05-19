@@ -1,6 +1,14 @@
+const { createNewProduct } = require("../Controllers/product-controllers");
 const Authenticate = require("../Middlewares/auth");
+const { cloudinaryFileUploader } = require("../Middlewares/file-uploader");
 
 const router = require("express").Router();
+
+router.post(
+  "/create-product",
+  cloudinaryFileUploader.single("image"),
+  createNewProduct
+);
 
 router.get("/products", Authenticate, (req, res) => {
   res.status(200).json([

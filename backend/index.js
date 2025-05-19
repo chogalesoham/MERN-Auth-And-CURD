@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "Hello World!" });
 });
 app.use("/api/auth", require("./Routes/auth-routes.js"));
-app.use("/api", require("./Routes/products-routes.js"));
+app.use("/api/admin", require("./Routes/products-routes.js"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
