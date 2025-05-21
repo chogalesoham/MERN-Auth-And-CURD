@@ -46,10 +46,41 @@ const updateProductById = async (req, res) => {
 //GET - all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await productModel.find({});
-    res
-      .status(200)
-      .json({ success: true, message: "all products", data: products });
+    let { page, limit, search } = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 5;
+    const skip = (page - 1) * limit;
+
+    let searchCriteria = {};
+    if (search) {
+      searchCriteria = {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      };
+    }
+    const totalProducts = await productModel.countDocuments(searchCriteria);
+
+    const products = await productModel
+      .find(searchCriteria)
+      .skip(skip)
+      .limit(limit)
+      .sort({ updatedAt: -1 });
+    const totalPages = Math.ceil(totalProducts / limit);
+    res.status(200).json({
+      success: true,
+      message: "all products",
+      data: {
+        products: products,
+        pagination: {
+          totalProducts,
+          currentPage: page,
+          totalPages,
+          pageSize: limit,
+        },
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
